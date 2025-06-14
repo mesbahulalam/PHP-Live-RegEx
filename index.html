@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Regex - A Live Regular Expression Tester for PHP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="php-badge">PHP</div>
+            <h1>Live Regex <span class="subtitle">— A Live Regular Expression Tester for PHP</span></h1>
+        </div>
+        <div class="action-button">
+            <a href="#" class="button-green">Tutorials and Regex Database</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="regex-input-section">
+            <h2>Regex</h2>
+            <div class="regex-container">
+                <div class="delimiter">/</div>
+                <input type="text" id="regex-pattern" placeholder="Enter your regex pattern" value="(.*), (.*)">
+                <div class="delimiter">/</div>
+                <input type="text" id="regex-options" placeholder="Options" class="options-input">
+            </div>
+        </section>
+
+        <section class="replacement-section">
+            <h2>Replacement</h2>
+            <input type="text" id="replacement-pattern" placeholder="$0 --> $2 $1" value="$0 --> $2 $1">
+        </section>
+
+        <section class="test-string-section">
+            <h2>Your search string(s)</h2>
+            <textarea id="test-strings" rows="8">last_name, first_name
+bjorge, philip
+kardashian, kim
+mercury, freddie</textarea>
+        </section>
+
+        <section class="regex-functions">
+            <button id="preg_match" class="active">preg_match</button>
+            <button id="preg_match_all">preg_match_all</button>
+            <button id="preg_replace">preg_replace</button>
+            <button id="preg_grep">preg_grep</button>
+            <button id="preg_split">preg_split</button>
+        </section>
+
+        <section class="code-display">
+            <pre id="php-code">preg_match('/(.+), (.+)/', $input_line, $output_array);</pre>
+        </section>
+
+        <section class="results-display">
+            <div id="results"></div>
+            <p class="note">note: preg_match is run on each line of input.</p>
+        </section>
+
+        <div class="button-container">
+            <button id="make-permalink" class="blue-button">Make a permalink</button>
+            <button id="clear-form" class="red-button">Clear Form Values</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
