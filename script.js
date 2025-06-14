@@ -74,13 +74,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function processRegex(pattern, options, replacement, strings) {
         // Clear previous results
         resultsDiv.innerHTML = '';
-        
+
         if (!pattern) return;
-        
+
         try {
             // Create regex object with pattern and options
             const regex = new RegExp(pattern, options);
-            
+
+            // For preg_match_all: process all strings together
+            if (activeFunction === 'preg_match_all') {
+                const allText = strings.filter(s => s.trim() !== '').join('\n');
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'array-result';
+                processPregMatchAll(regex, allText, resultDiv);
+                resultsDiv.appendChild(resultDiv);
+                return;
+            }
+
             // Process each string based on active function
             strings.forEach((string, index) => {
                 if (string.trim() === '') return;
@@ -136,35 +146,36 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Process preg_match_all
     function processPregMatchAll(regex, string, resultDiv) {
+        regex.lastIndex = 0;
+        let matches = [];
         let match;
-        const allMatches = [];
-        
-        // Use exec() in a loop to simulate preg_match_all
-        while ((match = regex.exec(string)) !== null) {
-            if (match.index === regex.lastIndex) {
-                regex.lastIndex++;
+        let groupCount = null;
+        let globalRegex = new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : regex.flags + 'g');
+        while ((match = globalRegex.exec(string)) !== null) {
+            if (groupCount === null) groupCount = match.length;
+            for (let i = 0; i < match.length; i++) {
+                if (!matches[i]) matches[i] = [];
+                matches[i].push(match[i] || '');
             }
-            allMatches.push([...match]);
+            if (match[0] === '') globalRegex.lastIndex++;
         }
-        
-        if (allMatches.length > 0) {
+        if (matches.length > 0 && matches[0].length > 0) {
             const headerDiv = document.createElement('div');
             headerDiv.className = 'array-header';
-            headerDiv.innerHTML = `<span class="array-toggle">▼</span> array( ${allMatches.length} )`;
+            headerDiv.innerHTML = `<span class="array-toggle">▼</span> array( ${matches.length} )`;
             resultDiv.appendChild(headerDiv);
-            
-            // Format results similar to PHP's preg_match_all
-            for (let i = 0; i < allMatches[0].length; i++) {
+
+            for (let i = 0; i < matches.length; i++) {
                 const subheaderDiv = document.createElement('div');
                 subheaderDiv.className = 'array-item';
-                subheaderDiv.innerHTML = `<span class="array-toggle">▼</span> ${i}: array( ${allMatches.length} )`;
+                subheaderDiv.innerHTML = `<span class="array-toggle">▼</span> ${i}: array( ${matches[i].length} )`;
                 resultDiv.appendChild(subheaderDiv);
-                
-                for (let j = 0; j < allMatches.length; j++) {
+
+                for (let j = 0; j < matches[i].length; j++) {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'array-item';
                     itemDiv.style.paddingLeft = '40px';
-                    itemDiv.innerHTML = `<span class="array-key">${j}</span> => <span class="array-value">${allMatches[j][i] || ''}</span>`;
+                    itemDiv.innerHTML = `<span class="array-key">${j}</span> => <span class="array-value">${matches[i][j]}</span>`;
                     resultDiv.appendChild(itemDiv);
                 }
             }
@@ -406,20 +417,20 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        if (result.success && result.count > 0 && result.matches) {
+        if (result.success && result.matches && Object.keys(result.matches).length > 0) {
             const matches = result.matches;
-            
+
             const headerDiv = document.createElement('div');
             headerDiv.className = 'array-header';
-            headerDiv.innerHTML = `<span class="array-toggle">▼</span> array( ${result.count} )`;
+            headerDiv.innerHTML = `<span class="array-toggle">▼</span> array( ${Object.keys(matches).length} )`;
             resultDiv.appendChild(headerDiv);
-            
+
             for (const [key, group] of Object.entries(matches)) {
                 const subheaderDiv = document.createElement('div');
                 subheaderDiv.className = 'array-item';
                 subheaderDiv.innerHTML = `<span class="array-toggle">▼</span> ${key}: array( ${group.length} )`;
                 resultDiv.appendChild(subheaderDiv);
-                
+
                 for (let i = 0; i < group.length; i++) {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'array-item';

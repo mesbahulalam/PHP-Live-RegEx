@@ -34,65 +34,71 @@ if (empty($pattern)) {
 // Prepare full pattern with delimiters and options
 $fullPattern = '/' . str_replace('/', '\/', $pattern) . '/' . $options;
 
-// Process each string
-foreach ($strings as $string) {
-    if (trim($string) === '') {
-        continue;
-    }
-
-    $result = [];
-    
-    try {
-        switch ($function) {
-            case 'preg_match':
-                $matches = [];
-                $success = preg_match($fullPattern, $string, $matches);
-                $result = [
-                    'success' => $success === 1,
-                    'matches' => $matches
-                ];
-                break;
-                
-            case 'preg_match_all':
-                $matches = [];
-                $count = preg_match_all($fullPattern, $string, $matches);
-                $result = [
-                    'success' => $count > 0,
-                    'count' => $count,
-                    'matches' => $matches
-                ];
-                break;
-                
-            case 'preg_replace':
-                $replaced = preg_replace($fullPattern, $replacement, $string);
-                $result = [
-                    'original' => $string,
-                    'replaced' => $replaced
-                ];
-                break;
-                
-            case 'preg_grep':
-                $result = [
-                    'matched' => preg_match($fullPattern, $string) === 1,
-                    'string' => $string
-                ];
-                break;
-                
-            case 'preg_split':
-                $parts = preg_split($fullPattern, $string);
-                $result = [
-                    'parts' => $parts
-                ];
-                break;
-                
-            default:
-                $result = ['error' => 'Invalid function'];
+if ($function === 'preg_match_all') {
+    // Only for preg_match_all: process all non-empty strings at once
+    $inputStrings = [];
+    foreach ($strings as $string) {
+        if (trim($string) !== '') {
+            $inputStrings[] = $string;
         }
-    } catch (Exception $e) {
-        $result = ['error' => $e->getMessage()];
     }
-    
-    $response['results'][] = $result;
+    $matches = [];
+    $count = preg_match_all($fullPattern, implode("\n", $inputStrings), $matches, PREG_PATTERN_ORDER);
+    $response['results'][] = [
+        'success' => $count > 0,
+        'matches' => $matches
+    ];
+} else {
+    // Process each string
+    foreach ($strings as $string) {
+        if (trim($string) === '') {
+            continue;
+        }
+
+        $result = [];
+        
+        try {
+            switch ($function) {
+                case 'preg_match':
+                    $matches = [];
+                    $success = preg_match($fullPattern, $string, $matches);
+                    $result = [
+                        'success' => $success === 1,
+                        'matches' => $matches
+                    ];
+                    break;
+                
+                case 'preg_replace':
+                    $replaced = preg_replace($fullPattern, $replacement, $string);
+                    $result = [
+                        'original' => $string,
+                        'replaced' => $replaced
+                    ];
+                    break;
+                
+                case 'preg_grep':
+                    $result = [
+                        'matched' => preg_match($fullPattern, $string) === 1,
+                        'string' => $string
+                    ];
+                    break;
+                
+                case 'preg_split':
+                    $parts = preg_split($fullPattern, $string);
+                    $result = [
+                        'parts' => $parts
+                    ];
+                    break;
+                
+                default:
+                    $result = ['error' => 'Invalid function'];
+            }
+        } catch (Exception $e) {
+            $result = ['error' => $e->getMessage()];
+        }
+        
+        $response['results'][] = $result;
+    }
 }
 
 echo json_encode($response);
