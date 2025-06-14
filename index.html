@@ -9,12 +9,14 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <div class="php-badge">PHP</div>
-            <h1>Live Regex <span class="subtitle">— A Live Regular Expression Tester for PHP</span></h1>
-        </div>
-        <div class="action-button">
-            <a href="#" class="button-green">Tutorials and Regex Database</a>
+        <div class="header-container">
+            <div class="logo">
+                <div class="php-badge">PHP</div>
+                <h1>Live Regex <span class="subtitle">— A Live Regular Expression Tester for PHP</span></h1>
+            </div>
+            <div class="action-button">
+                <a href="https://www.phpliveregex.com/learn" class="button-green">Tutorials and Regex Database</a>
+            </div>
         </div>
     </header>
 
@@ -63,6 +65,152 @@ mercury, freddie</textarea>
             <button id="make-permalink" class="blue-button">Make a permalink</button>
             <button id="clear-form" class="red-button">Clear Form Values</button>
         </div>
+    </main>
+
+    <br>
+    <main>
+        <section class="cheat-sheet-section">
+            <h2 class="cheat-sheet-title">Regex Cheat Sheet</h2>
+            
+            <div class="regex-grid">
+                <div>
+                    <div class="regex-item">
+                        <span class="regex-code">[abc]</span>
+                        <span class="regex-description">A single character of: a, b or c</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">[^abc]</span>
+                        <span class="regex-description">Any single character except: a, b, or c</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">[a-z]</span>
+                        <span class="regex-description">Any single character in the range a-z</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">[a-zA-Z]</span>
+                        <span class="regex-description">Any single character in the range a-z or A-Z</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">^</span>
+                        <span class="regex-description">Start of line</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">$</span>
+                        <span class="regex-description">End of line</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\A</span>
+                        <span class="regex-description">Start of string</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\z</span>
+                        <span class="regex-description">End of string</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="regex-item">
+                        <span class="regex-code">.</span>
+                        <span class="regex-description">Any single character</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\s</span>
+                        <span class="regex-description">Any whitespace character</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\S</span>
+                        <span class="regex-description">Any non-whitespace character</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\d</span>
+                        <span class="regex-description">Any digit</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\D</span>
+                        <span class="regex-description">Any non-digit</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\w</span>
+                        <span class="regex-description">Any word character (letter, number, underscore)</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\W</span>
+                        <span class="regex-description">Any non-word character</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">\b</span>
+                        <span class="regex-description">Any word boundary</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="regex-item">
+                        <span class="regex-code">(...)</span>
+                        <span class="regex-description">Capture everything enclosed</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">(a|b)</span>
+                        <span class="regex-description">a or b</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">a?</span>
+                        <span class="regex-description">Zero or one of a</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">a*</span>
+                        <span class="regex-description">Zero or more of a</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">a+</span>
+                        <span class="regex-description">One or more of a</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">a{3}</span>
+                        <span class="regex-description">Exactly 3 of a</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">a{3,}</span>
+                        <span class="regex-description">3 or more of a</span>
+                    </div>
+                    <div class="regex-item">
+                        <span class="regex-code">a{3,6}</span>
+                        <span class="regex-description">Between 3 and 6 of a</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Options</h2>
+            <div class="options-grid">
+                <div class="option-item">
+                    <span class="option-flag">i</span>
+                    <span class="option-description">case insensitive</span>
+                </div>
+                <div class="option-item">
+                    <span class="option-flag">m</span>
+                    <span class="option-description">treat as multi-line string</span>
+                </div>
+                <div class="option-item">
+                    <span class="option-flag">s</span>
+                    <span class="option-description">dot matches newline</span>
+                </div>
+                <div class="option-item">
+                    <span class="option-flag">x</span>
+                    <span class="option-description">ignore whitespace in regex</span>
+                </div>
+                <div class="option-item">
+                    <span class="option-flag">A</span>
+                    <span class="option-description">matches only at the start of string</span>
+                </div>
+                <div class="option-item">
+                    <span class="option-flag">D</span>
+                    <span class="option-description">matches only at the end of string</span>
+                </div>
+                <div class="option-item">
+                    <span class="option-flag">U</span>
+                    <span class="option-description">non-greedy matching by default</span>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script src="script.js"></script>
