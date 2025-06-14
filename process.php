@@ -84,6 +84,7 @@ if ($function === 'preg_match_all') {
                     break;
                 
                 case 'preg_split':
+                    // Ensure all parts, including empty, are returned (no PREG_SPLIT_NO_EMPTY)
                     $parts = preg_split($fullPattern, $string);
                     $result = [
                         'parts' => $parts

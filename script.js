@@ -212,17 +212,32 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Process preg_split
     function processPregSplit(regex, string, resultDiv) {
-        const parts = string.split(regex);
-        
+        // Custom split to mimic PHP's preg_split (including empty strings)
+        let parts = [];
+        let lastIndex = 0;
+        let match;
+
+        // Clone regex with global flag
+        let flags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g';
+        let globalRegex = new RegExp(regex.source, flags);
+
+        while ((match = globalRegex.exec(string)) !== null) {
+            parts.push(string.slice(lastIndex, match.index));
+            lastIndex = match.index + match[0].length;
+            // Prevent infinite loop on zero-length matches
+            if (match[0].length === 0) globalRegex.lastIndex++;
+        }
+        parts.push(string.slice(lastIndex));
+
         const headerDiv = document.createElement('div');
         headerDiv.className = 'array-header';
         headerDiv.innerHTML = `<span class="array-toggle">▼</span> array( ${parts.length} )`;
         resultDiv.appendChild(headerDiv);
-        
+
         parts.forEach((part, i) => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'array-item';
-            itemDiv.innerHTML = `<span class="array-key">${i}</span> => <span class="array-value">${part}</span>`;
+            itemDiv.innerHTML = `<span class="array-key">${i}</span> => <span class="array-value">${part.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
             resultDiv.appendChild(itemDiv);
         });
     }
